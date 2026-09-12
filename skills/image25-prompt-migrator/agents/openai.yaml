@@ -1,0 +1,6 @@
+interface:
+  display_name: "GPT Image 2.5 Prompt Migrator"
+  short_description: "Convert existing image prompts to GPT Image 2.5"
+  default_prompt: "Use $image25-prompt-migrator to convert this existing source prompt for GPT Image 2.5 while preserving its intent."
+policy:
+  allow_implicit_invocation: true
