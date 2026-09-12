@@ -4,7 +4,17 @@
 
 [![Validate public skill](https://github.com/gd8455-create/image25-prompt-migrator/actions/workflows/ci.yml/badge.svg)](https://github.com/gd8455-create/image25-prompt-migrator/actions/workflows/ci.yml)
 
-GPT Image 2.5 Prompt Migrator is a standalone Codex Skill for migrating an **existing** image-generation or image-editing prompt into a version that can be used and tested with GPT Image 2.5.
+**Old prompts → GPT Image 2.5: a Skill for migration, audit, and prompt repair.**
+
+GPT Image 2.5 Prompt Migrator works with image prompts you **already have** from older models or other AI tools. It audits conflicting instructions and incompatible syntax, migrates the prompt while preserving intent, and repairs the converted prompt when actual generation results reveal a failure. The source, reasons for changes, and acceptance criteria remain traceable.
+
+| Capability | What it does |
+| --- | --- |
+| **Migration** | Convert an existing prompt from an older image model, another image tool, or another AI assistant into prompt text and settings for GPT Image 2.5. |
+| **Audit** | Check positive/negative conflicts, source-tool syntax, false numerical precision, reference roles, and required rendered text; record what is preserved, changed, or unresolved. |
+| **Prompt repair** | Use the source prompt, prior conversion, and observed failure evidence to correct omissions, ambiguity, or drift in the converted prompt. A new generation and review are required to establish success. |
+
+All three capabilities work from the same existing prompt. Repair applies to **prompt text**. The core Skill delivers text and QA; it does not call an image-generation API or directly repair image pixels.
 
 It accepts prompts written for earlier GPT Image models, prompts from other image tools, and existing image prompts produced by other AI assistants. It does not start from a blank brief or write a new prompt from scratch. It also does not assume that every prompt needs rewriting: when the source is already suitable for GPT Image 2.5, it passes the prompt through unchanged and returns `changes: []`.
 
@@ -46,6 +56,7 @@ It does not ideate from a blank brief or write a wholly new image prompt, and it
 3. When conversion is needed, change only what is relevant to GPT Image 2.5 migration while preserving creative intent and required constraints.
 4. Record source syntax with no reliable target mapping as removed, provenance-only, or `Unresolved`; do not invent an equivalent parameter.
 5. Deliver the migrated prompt, change record, request settings, and post-generation QA.
+6. If generation with the converted prompt has produced an observed failure, compare it with the original requirements, repair the relevant prompt text, and plan another review.
 
 Model comparisons should begin with a saved baseline. The first pass can change only the selected model while keeping the prompt, references, dimensions, format, and quality setting fixed. Controlled prompt changes come after that baseline. This follows the official GPT Image 2.5 migration guidance to use representative inputs, fixed comparison conditions, and complete result checks.
 
@@ -88,6 +99,20 @@ Migration baseline:
 ```text
 Use $image25-prompt-migrator to prepare a GPT Image 2.5 migration baseline for this existing prompt. Do not rewrite the prompt in the first pass. List fixed settings, repetitions, and evaluation criteria.
 ```
+
+Audit an existing prompt:
+
+```text
+Use $image25-prompt-migrator to audit this older prompt for GPT Image 2.5 migration. Identify conflicts, source-specific syntax, and requirements to preserve. Do not rewrite compatible content merely to show activity.
+```
+
+Repair a failed conversion:
+
+```text
+Use $image25-prompt-migrator with the source prompt, prior conversion, and generated image or actual failure description I provide. Repair only the parts connected to the failure, explain the changes, and mark untested results as pending validation.
+```
+
+See [migration and repair modes](skills/image25-prompt-migrator/references/workflow-modes.md) for input requirements.
 
 ## Examples
 

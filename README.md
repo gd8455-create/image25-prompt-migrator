@@ -4,7 +4,17 @@
 
 [![Validate public skill](https://github.com/gd8455-create/image25-prompt-migrator/actions/workflows/ci.yml/badge.svg)](https://github.com/gd8455-create/image25-prompt-migrator/actions/workflows/ci.yml)
 
-GPT Image 2.5 Prompt Migrator 是一個獨立的 Codex Skill，專門把**已經存在**的圖片生成或編輯提示詞，遷移成可供 GPT Image 2.5 使用與測試的版本。
+**舊 Prompt → GPT Image 2.5：遷移、稽核、修復 Skill。**
+
+GPT Image 2.5 Prompt Migrator 專門整理你**已經擁有**的舊版或跨 AI 影像提示詞：檢查衝突與不相容語法，保留原意遷移到 GPT Image 2.5；若遷移稿實際生成後出現問題，再依失敗證據修正提示詞。原稿、修改理由與驗收條件都可以追溯。
+
+| 核心能力 | 具體幫你做什麼 |
+| --- | --- |
+| **遷移** | 把舊模型、其他影像工具或其他 AI 助手產出的既有 prompt，轉成可供 GPT Image 2.5 使用與測試的提示詞及設定。 |
+| **稽核** | 檢查正負指令衝突、來源工具語法、數值假精準、參考圖角色與必要文字是否相容；記錄保留、修改和未解決的項目。 |
+| **修復** | 根據原始 prompt、先前遷移稿與實際失敗證據，修正造成遺漏、歧義或偏離原意的提示詞；再次生成後才能判定是否修復成功。 |
+
+這三項能力圍繞同一份既有 prompt。修復的對象是**提示詞**；核心 Skill 交付文字與 QA，不會自行呼叫生圖 API 或直接修補圖片像素。
 
 它接受舊版 GPT Image 提示詞、其他影像工具的提示詞，以及其他 AI 助手產出的既有 image prompt。它不從空白需求開始代寫新提示詞，也不把所有提示詞都視為必須改寫：若來源內容已適合 GPT Image 2.5，會原樣通過並回報 `changes: []`。
 
@@ -47,6 +57,7 @@ GPT Image 2.5 Prompt Migrator 是一個獨立的 Codex Skill，專門把**已經
 3. 需要轉換時，只改與 GPT Image 2.5 遷移有關的部分，保留創作意圖與必要限制。
 4. 將無法對應的來源語法列為已移除、僅供追溯或 `Unresolved`，不捏造等價參數。
 5. 交付可比較的遷移稿、變更紀錄、request settings 與生成後 QA。
+6. 若遷移稿已有實際失敗證據，對照原始要求進入修復流程，記錄修正理由並安排再次驗收。
 
 模型遷移比較應先保存 baseline。第一輪可以只切換指定模型，保持 prompt、參考圖、尺寸、格式與品質設定不變；確認基準後，才一次改一個變因。這與 OpenAI 官方 GPT Image 2.5 遷移指南所建議的代表性輸入、固定比較條件與完整結果檢查一致。
 
@@ -87,6 +98,20 @@ python -X utf8 scripts/install.py
 ```text
 使用 $image25-prompt-migrator，為這份既有 prompt 建立 GPT Image 2.5 migration baseline。第一輪不要改寫 prompt，列出固定設定、重複測試方式與驗收指標。
 ```
+
+稽核既有 prompt：
+
+```text
+使用 $image25-prompt-migrator，稽核下面這份舊 prompt 遷移到 GPT Image 2.5 的風險。指出衝突、工具專屬語法和必須保留的需求；沒有問題的內容不要強制改寫。
+```
+
+修復失敗的遷移稿：
+
+```text
+使用 $image25-prompt-migrator，依我提供的原始 prompt、先前遷移稿，以及成圖或實際失敗描述，修復遷移稿。只修正與失敗相關的部分，列出理由；尚未重測的地方標示待驗證。
+```
+
+詳細輸入條件見[遷移與修復工作模式](skills/image25-prompt-migrator/references/workflow-modes.md)。
 
 ## 範例
 
